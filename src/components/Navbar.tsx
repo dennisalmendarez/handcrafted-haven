@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Navbar() {
   return (
     <header
@@ -33,18 +35,20 @@ export default function Navbar() {
           <a href="#">Shop</a>
           <a href="#">Artisans</a>
           <a href="#">About</a>
-          <button
-            style={{
-              backgroundColor: "#5e6472",
-              color: "white",
-              border: "none",
-              padding: "0.7rem 1rem",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
-          >
-            Sign In
-          </button>
+<Link href="/signin">
+  <button
+    style={{
+      backgroundColor: "#5e6472",
+      color: "white",
+      border: "none",
+      padding: "0.7rem 1rem",
+      borderRadius: "6px",
+      cursor: "pointer",
+    }}
+  >
+    Sign In
+  </button>
+</Link>
         </nav>
       </div>
     </header>
