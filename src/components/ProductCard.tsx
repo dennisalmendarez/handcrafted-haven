@@ -1,12 +1,5 @@
 import Image from "next/image";
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-};
+import type { Product } from "@/data/products";
 
 type ProductCardProps = {
   product: Product;
@@ -31,7 +24,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       />
 
       <div style={{ padding: "1rem" }}>
-        <h3 style={{ marginBottom: "0.5rem", color: "#5e6472" }}>
+        <h3 style={{ marginBottom: "0.5rem", color: "var(--blue-slate)" }}>
           {product.name}
         </h3>
         <p style={{ marginBottom: "0.5rem", fontWeight: "bold" }}>
@@ -42,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
         <button
           style={{
-            backgroundColor: "#b8f2e6",
+            backgroundColor: "var(--icy-aqua)",
             border: "none",
             padding: "0.7rem 1rem",
             borderRadius: "6px",

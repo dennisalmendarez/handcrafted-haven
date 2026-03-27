@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Navbar() {
   return (
     <header
@@ -29,10 +31,11 @@ export default function Navbar() {
             alignItems: "center",
           }}
         >
-          <a href="#">Home</a>
-          <a href="#">Shop</a>
-          <a href="#">Artisans</a>
-          <a href="#">About</a>
+          <Link href="/">Home</Link>
+          <Link href="/shop">Shop</Link>
+          <Link href="/artisans">Artisans</Link>
+          <Link href="/about">About</Link>
+
           <button
             style={{
               backgroundColor: "#5e6472",
