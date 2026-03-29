@@ -1,19 +1,25 @@
-import ProductCard from "./ProductCard";
+import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 
-export default function ProductList() {
+export default function ShopPage() {
   return (
-    <section style={{ padding: "3rem 0", backgroundColor: "var(--eggshell)" }}>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--eggshell)",
+        padding: "3rem 0",
+      }}
+    >
       <div style={{ width: "90%", maxWidth: "1200px", margin: "0 auto" }}>
-        <h2
+        <h1
           style={{
-            fontSize: "2rem",
-            marginBottom: "1.5rem",
+            fontSize: "2.5rem",
+            marginBottom: "2rem",
             color: "var(--blue-slate)",
           }}
         >
-          Featured Products
-        </h2>
+          Shop Our Collection
+        </h1>
 
         <div
           style={{
@@ -27,6 +33,6 @@ export default function ProductList() {
           ))}
         </div>
       </div>
-    </section>
+    </main>
   );
 }

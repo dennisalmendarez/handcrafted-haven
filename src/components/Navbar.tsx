@@ -35,6 +35,7 @@ export default function Navbar() {
           <Link href="/shop">Shop</Link>
           <Link href="/artisans">Artisans</Link>
           <Link href="/about">About</Link>
+
           <Link
             href="/signin"
             style={{
