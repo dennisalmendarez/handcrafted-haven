@@ -1,22 +1,22 @@
+import Link from 'next/link';
+
 export default function AboutSection() {
   return (
-    <section style={{ padding: "3rem 0", backgroundColor: "white" }}>
-      <div style={{ width: "90%", maxWidth: "1200px", margin: "0 auto" }}>
-        <h2
-          style={{
-            fontSize: "2rem",
-            marginBottom: "1rem",
-            color: "#5e6472",
-          }}
-        >
-          About Handcrafted Haven
-        </h2>
-
-        <p style={{ lineHeight: 1.7, maxWidth: "800px" }}>
-          Handcrafted Haven is an online marketplace where artisans can share
-          their stories and sell handmade goods. Our goal is to support
-          creativity, craftsmanship, and meaningful shopping experiences.
-        </p>
+    <section className="section-block">
+      <div className="site-container two-column-copy">
+        <div>
+          <p className="eyebrow">Why Handcrafted Haven</p>
+          <h2>A marketplace built for selling and storytelling.</h2>
+        </div>
+        <div>
+          <p>
+            Sellers can list handmade products, share progress photos like a mini social feed, and manage conversations around their work.
+            Customers can shop, follow the artisans page, and review previous orders from their dashboard.
+          </p>
+          <Link href="/about" className="text-link">
+            Read more about the platform
+          </Link>
+        </div>
       </div>
     </section>
   );
