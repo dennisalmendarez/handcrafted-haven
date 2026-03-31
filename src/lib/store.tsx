@@ -80,21 +80,27 @@ function getDefaultState(): PersistedStore {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<PersistedStore>(getDefaultState);
-  const [ready, setReady] = useState(false);
+  const [data, setData] = useState<PersistedStore>(() => {
+  if (typeof window === 'undefined') {
+    return getDefaultState();
+  }
+
+  const raw = window.localStorage.getItem(STORAGE_KEY);
+
+  if (!raw) {
+    return getDefaultState();
+  }
+
+  try {
+    return JSON.parse(raw) as PersistedStore;
+  } catch {
+    return getDefaultState();
+  }
+});
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      setData(JSON.parse(raw) as PersistedStore);
-    }
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [data, ready]);
+  }, [data]);
 
   const currentUser = useMemo(
     () => data.users.find((user) => user.id === data.currentUserId) ?? null,
@@ -341,10 +347,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       }));
     },
   }), [currentUser, data]);
-
-  if (!ready) {
-    return null;
-  }
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

@@ -1,10 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { FormEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useStore } from '@/lib/store';
 import { categories } from '@/data/categories';
 import { currency, formatDate } from '@/lib/utils';
+import type { Category } from '@/data/categories';
+
+type ProductForm = {
+  id: string;
+  name: string;
+  category: Category;
+  price: number;
+  stock: number;
+  description: string;
+  image: string;
+};
 
 export default function DashboardContent() {
   const {
@@ -21,7 +32,7 @@ export default function DashboardContent() {
     logout,
   } = useStore();
 
-  const [productForm, setProductForm] = useState({
+  const [productForm, setProductForm] = useState<ProductForm>({
     id: '',
     name: '',
     category: categories[0],
@@ -57,7 +68,7 @@ export default function DashboardContent() {
     );
   }
 
-  function handleProductSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleProductSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (productForm.id) {
       updateProduct(productForm.id, {
@@ -81,7 +92,7 @@ export default function DashboardContent() {
     setProductForm({ id: '', name: '', category: categories[0], price: 0, stock: 1, description: '', image: '/images/pottery.webp' });
   }
 
-  function handlePostSubmit(event: FormEvent<HTMLFormElement>) {
+  function handlePostSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (postForm.id) {
       updatePost(postForm.id, {
@@ -151,7 +162,16 @@ export default function DashboardContent() {
                   <h3>{productForm.id ? 'Edit product' : 'Add product for sale'}</h3>
                   <form className="auth-form" onSubmit={handleProductSubmit}>
                     <input className="auth-input" value={productForm.name} onChange={(event) => setProductForm((prev) => ({ ...prev, name: event.target.value }))} placeholder="Product name" required />
-                    <select className="auth-input" value={productForm.category} onChange={(event) => setProductForm((prev) => ({ ...prev, category: event.target.value as (typeof categories)[number] }))}>
+                    <select
+                      className="auth-input"
+                      value={productForm.category}
+                      onChange={(event) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          category: event.target.value as Category,
+                        }))
+                      }
+                    >
                       {categories.map((category) => <option key={category} value={category}>{category}</option>)}
                     </select>
                     <input className="auth-input" type="number" min={1} value={productForm.price} onChange={(event) => setProductForm((prev) => ({ ...prev, price: Number(event.target.value) }))} placeholder="Price" required />
