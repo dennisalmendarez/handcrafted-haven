@@ -1,36 +1,47 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useStore } from '@/lib/store';
 
 export default function SignInForm() {
+  const { login } = useStore();
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const ok = login(email);
+    if (!ok) {
+      setError('No matching account was found.');
+      return;
+    }
+    router.push('/dashboard');
+  }
+
   return (
     <section className="auth-section">
       <div className="auth-card">
-        <h2 className="auth-title">Welcome Back 👋</h2>
-
-        <form className="auth-form">
+        <h1>Welcome back</h1>
+        <form className="auth-form" onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="Email address"
-            required
             className="auth-input"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Email address"
           />
-
           <input
+            className="auth-input"
             type="password"
             placeholder="Password"
-            required
-            className="auth-input"
           />
-
-          <button type="submit" className="btn-primary auth-button">
-            Sign In
-          </button>
+          {error ? <p className="error-text">{error}</p> : null}
+          <button type="submit" className="btn-link">Sign In</button>
         </form>
-
         <p className="auth-footer">
-          Don’t have an account?{' '}
-          <Link href="/signup" className="auth-link">
-            Sign up
-          </Link>
+          Need an account? <Link href="/signup" className="text-link">Create one</Link>
         </p>
       </div>
     </section>
