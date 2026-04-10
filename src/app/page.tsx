@@ -1,14 +1,14 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import ProductList from "@/components/ProductList";
-import AboutSection from "@/components/AboutSection";
+import Hero from '@/components/Hero';
+import MarketingShowcase from '@/components/MarketingShowcase';
+import CategoryStrip from '@/components/CategoryStrip';
+import AboutSection from '@/components/AboutSection';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main>
-      <Navbar />
       <Hero />
-      <ProductList />
+      <MarketingShowcase />
+      <CategoryStrip />
       <AboutSection />
     </main>
   );
