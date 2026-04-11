@@ -1,7 +1,9 @@
+
 import './globals.css';
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
-import { StoreProvider } from '@/lib/store';
+//import { StoreProvider } from '@/lib/store';
+import Providers from "./providers"
 
 export const metadata: Metadata = {
   title: 'Handcrafted Haven',
@@ -12,10 +14,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        <StoreProvider>
+        <Providers>
           <Navbar />
           {children}
-        </StoreProvider>
+        </Providers>
       </body>
     </html>
   );
