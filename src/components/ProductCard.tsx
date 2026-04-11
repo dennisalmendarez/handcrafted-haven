@@ -1,7 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { currency } from '@/lib/utils';
+import { addToCart, setBuyNowCart } from '@/lib/cart';
 
 type Product = {
   id: string;
@@ -17,10 +19,26 @@ type Product = {
 };
 
 function isRemoteImage(src: string) {
-  return src.startsWith('http://') || src.startsWith('https://');
+  return (
+    src.startsWith('http://') ||
+    src.startsWith('https://') ||
+    src.startsWith('data:image/')
+  );
 }
 
 export default function ProductCard({ product }: { product: Product }) {
+  const router = useRouter();
+
+  function handleAddToCart() {
+    addToCart(product.id, 1);
+    router.push('/cart');
+  }
+
+  function handleBuyNow() {
+    setBuyNowCart(product.id, 1);
+    router.push('/checkout');
+  }
+
   return (
     <article className="card product-card">
       {isRemoteImage(product.image) ? (
@@ -47,7 +65,25 @@ export default function ProductCard({ product }: { product: Product }) {
         <p>{product.description}</p>
 
         <div className="card-footer-row">
-          <strong>{currency.format(product.price)}</strong>
+          <strong>{currency.format(Number(product.price))}</strong>
+
+          <div className="inline-form start">
+            <button
+              type="button"
+              className="btn-link btn-secondary"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </button>
+
+            <button
+              type="button"
+              className="btn-link"
+              onClick={handleBuyNow}
+            >
+              Buy Now
+            </button>
+          </div>
         </div>
       </div>
     </article>
