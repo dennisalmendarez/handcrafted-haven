@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
   role TEXT NOT NULL CHECK (role IN ('seller', 'customer')),
   bio TEXT DEFAULT '',
   avatar TEXT DEFAULT '',
@@ -39,12 +40,5 @@ CREATE TABLE IF NOT EXISTS orders (
   customer_name TEXT NOT NULL,
   total NUMERIC(10,2) NOT NULL,
   status TEXT NOT NULL DEFAULT 'Placed',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS users (
-  id UUID PRIMARY KEY default gen_random_uuid(),
-  email TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

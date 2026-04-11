@@ -32,10 +32,7 @@ export default function ShopContent({
           <div>
             <p className="eyebrow">Live seller catalog</p>
             <h1>Shop products posted by artisan accounts.</h1>
-            <p>
-              Everything in this section comes from seller listings, not from the
-              front-page example images.
-            </p>
+            <p>Everything in this section comes from the real database.</p>
           </div>
 
           <label className="select-wrap">
@@ -64,9 +61,9 @@ export default function ShopContent({
                 product={{
                   id: product.id,
                   sellerId: product.seller_id ?? '',
-                  sellerName: '',
+                  sellerName: product.seller_name ?? 'Seller',
                   name: product.name,
-                  category: product.category as never,
+                  category: product.category,
                   price: Number(product.price),
                   description: product.description,
                   image: product.image,

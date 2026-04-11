@@ -1,16 +1,16 @@
-
 import './globals.css';
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
-//import { StoreProvider } from '@/lib/store';
-import Providers from "./providers"
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'Handcrafted Haven',
   description: 'Marketplace and artisan community for handmade goods.',
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>
