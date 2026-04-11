@@ -7,7 +7,8 @@ function isValidImageValue(value: string) {
   return (
     value.startsWith('http://') ||
     value.startsWith('https://') ||
-    value.startsWith('/images/')
+    value.startsWith('/images/') ||
+    value.startsWith('data:image/')
   );
 }
 
