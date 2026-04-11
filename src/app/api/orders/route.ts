@@ -11,6 +11,26 @@ type OrderItem = {
   image: string;
 };
 
+type DbOrder = {
+  id: string;
+  customer_id: string;
+  customer_name: string;
+  items: unknown;
+  total: number;
+  status: string;
+  created_at: string;
+};
+
+type NormalizedOrder = {
+  id: string;
+  customer_id: string;
+  customer_name: string;
+  items: OrderItem[];
+  total: number;
+  status: string;
+  created_at: string;
+};
+
 function normalizeItems(value: unknown): OrderItem[] {
   if (Array.isArray(value)) {
     return value as OrderItem[];
@@ -28,6 +48,18 @@ function normalizeItems(value: unknown): OrderItem[] {
   return [];
 }
 
+function normalizeOrder(order: DbOrder): NormalizedOrder {
+  return {
+    id: order.id,
+    customer_id: order.customer_id,
+    customer_name: order.customer_name,
+    items: normalizeItems(order.items),
+    total: Number(order.total),
+    status: order.status,
+    created_at: order.created_at,
+  };
+}
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -36,7 +68,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
     }
 
-    const orders = await sql`
+    const orders = await sql<DbOrder[]>`
       SELECT
         id,
         customer_id,
@@ -50,12 +82,9 @@ export async function GET() {
       ORDER BY created_at DESC
     `;
 
-    const normalizedOrders = orders.map((order) => ({
-      ...order,
-      items: normalizeItems(order.items),
-    }));
-
-    return NextResponse.json({ orders: normalizedOrders });
+    return NextResponse.json({
+      orders: orders.map(normalizeOrder),
+    });
   } catch (error) {
     console.error('GET /api/orders error:', error);
 
@@ -101,7 +130,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const inserted = await sql`
+    const inserted = await sql<DbOrder[]>`
       INSERT INTO orders (customer_id, customer_name, items, total, status)
       VALUES (
         ${session.user.id},
@@ -113,10 +142,7 @@ export async function POST(request: Request) {
       RETURNING id, customer_id, customer_name, items, total, status, created_at
     `;
 
-    const order = {
-      ...inserted[0],
-      items: normalizeItems(inserted[0].items),
-    };
+    const order = normalizeOrder(inserted[0]);
 
     return NextResponse.json({
       ok: true,
