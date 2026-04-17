@@ -24,6 +24,15 @@ export type Post = {
   created_at: string;
 };
 
+export type Comment = {
+  id: string;
+  post_id: string;
+  author_id: string;
+  author_name: string;
+  message: string;
+  created_at: string;
+};
+
 export async function getProducts(): Promise<ShopProduct[]> {
   return sql<ShopProduct[]>`
     SELECT
@@ -57,5 +66,21 @@ export async function getPosts(): Promise<Post[]> {
     FROM posts p
     LEFT JOIN users u ON u.id = p.author_id
     ORDER BY p.created_at DESC
+  `;
+}
+
+export async function getCommentsByPostId(postId: string): Promise<Comment[]> {
+  return sql<Comment[]>`
+    SELECT 
+      c.id, 
+      c.post_id, 
+      c.author_id, 
+      u.name as author_name, 
+      c.message, 
+      c.created_at
+    FROM comments c
+    JOIN users u ON u.id = c.author_id
+    WHERE c.post_id = ${postId}
+    ORDER BY c.created_at ASC
   `;
 }

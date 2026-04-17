@@ -5,10 +5,13 @@ export async function GET() {
   try {
     await sql`CREATE EXTENSION IF NOT EXISTS "pgcrypto"`;
 
-    // Drop old tables first in the correct dependency order
+    // 1. Drop child tables first (the ones with REFERENCES)
+    await sql`DROP TABLE IF EXISTS comments`; 
     await sql`DROP TABLE IF EXISTS orders`;
     await sql`DROP TABLE IF EXISTS posts`;
     await sql`DROP TABLE IF EXISTS products`;
+
+    // 2. Drop the parent table last
     await sql`DROP TABLE IF EXISTS users`;
 
     // Recreate users
@@ -64,6 +67,17 @@ export async function GET() {
         created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `;
+
+    // Recreate comments
+    await sql`
+      CREATE TABLE IF NOT EXISTS comments (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
+        author_id UUID REFERENCES users(id) ON DELETE CASCADE,
+        message TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+   `;
 
     return NextResponse.json({
       ok: true,

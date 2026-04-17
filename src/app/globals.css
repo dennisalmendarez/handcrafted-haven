@@ -278,11 +278,18 @@ img {
 
 .auth-form,
 .narrow-stack,
-.feed-stack,
 .list-stack {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.feed-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 650px; /* Shrinks the post width */
+  margin: 0 auto;    /* Centers the feed on the page */
 }
 
 .auth-input,
